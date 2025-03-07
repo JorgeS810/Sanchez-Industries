@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Tiendas</title>
+    <script>
+        let carrito = [];
+        
+        function agregarAlCarrito(nombre, precio) {
+            carrito.push({ nombre, precio });
+            actualizarCarrito();
+        }
+        
+        function actualizarCarrito() {
+            let lista = document.getElementById('lista-carrito');
+            lista.innerHTML = '';
+            carrito.forEach((producto, index) => {
+                let item = document.createElement('li');
+                item.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+                item.innerHTML = `${producto.nombre} - Q${producto.precio} <button class='btn btn-danger btn-sm' onclick='eliminarDelCarrito(${index})'>X</button>`;
+                lista.appendChild(item);
+            });
+        }
+        
+        function eliminarDelCarrito(index) {
+            carrito.splice(index, 1);
+            actualizarCarrito();
+        }
+        
+        function finalizarCompra() {
+            carrito = [];
+            actualizarCarrito();
+            let modalCompra = bootstrap.Modal.getInstance(document.getElementById('modalCompra'));
+            modalCompra.hide();
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <img src="logo2.png" alt="Logo" width="50" height="50">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="tiendas.html">Tiendas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contacto.html">Contacto</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="productos.html">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalCarrito">Ver Carrito</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section id="productos" class="container my-5">
+        <h2 class="text-center mb-4">Nuestros Productos</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="producto1.jpg" class="card-img-top" alt="Producto 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Iphone 16 Pro Max</h5>
+                        <p class="card-text">Q16,499.00</p>
+                        <button class="btn btn-primary" onclick="agregarAlCarrito('Iphone 16 Pro Max', 16499)">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="producto2.jpg" class="card-img-top" alt="Producto 2">
+                    <div class="card-body">
+                        <h5 class="card-title">Refrigeradora Bespoke French Door RF29DB9950QDAP</h5>
+                        <p class="card-text">Q27,299.00</p>
+                        <button class="btn btn-primary" onclick="agregarAlCarrito('Refrigeradora Bespoke French Door RF29DB9950QDAP', 27299)">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="producto3.jpg" class="card-img-top" alt="Producto 3">
+                    <div class="card-body">
+                        <h5 class="card-title">Asus ROG Zephyrus Duo 15</h5>
+                        <p class="card-text">Q21,000.00</p>
+                        <button class="btn btn-primary" onclick="agregarAlCarrito('Asus ROG Zephyrus Duo 15', 21000)">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="modalCarrito" tabindex="-1" aria-labelledby="modalCarritoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCarritoLabel">Carrito de Compras</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="lista-carrito" class="list-group mb-3"></ul>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCompra">Finalizar Compra</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCompra" tabindex="-1" aria-labelledby="modalCompraLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCompraLabel">Método de Pago</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="metodoPago" class="form-label">Seleccione un método de pago:</label>
+                            <select class="form-control" id="metodoPago">
+                                <option>Efectivo</option>
+                                <option>Tarjeta</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="metodoEntrega" class="form-label">Seleccione un método de entrega:</label>
+                            <select class="form-control" id="metodoEntrega">
+                                <option>Recoger en tienda</option>
+                                <option>A domicilio</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="finalizarCompra()">Confirmar Compra</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
